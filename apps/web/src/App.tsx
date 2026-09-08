@@ -118,6 +118,62 @@ export function App() {
     });
 
     setTimeout(() => {
+      const targetProduct = products.find((p) => p.id === productId);
+      const prodName = targetProduct ? targetProduct.title : 'Produto Selecionado';
+
+      // Atualizar status do produto para 'PUBLISHED'
+      setProducts((prev) =>
+        prev.map((p) => (p.id === productId ? { ...p, status: 'PUBLISHED' } : p))
+      );
+
+      // Injetar os 3 novos criativos verticais gerados no estado da lista
+      const newVariations: VideoVariationCardItem[] = [
+        {
+          id: `var_${Date.now()}_a`,
+          variationLabel: 'Variação A (Dor & Solução Imediata)',
+          productName: prodName,
+          durationSeconds: 30,
+          hookText: `Você ainda perde tempo com isso? Veja como o ${prodName.split(' ')[0]} resolve em 3 segundos!`,
+          videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-vertical-video-of-a-woman-opening-a-package-41617-large.mp4',
+          ctrPercent: 4.8,
+          cvrPercent: 5.2,
+          status: 'STREAMING_LIVE',
+        },
+        {
+          id: `var_${Date.now()}_b`,
+          variationLabel: 'Variação B (Demonstração Viral Magnética)',
+          productName: prodName,
+          durationSeconds: 30,
+          hookText: `O segredo que os criadores gringos usam com esse ${prodName.split(' ')[0]}...`,
+          videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-vertical-video-of-a-woman-opening-a-package-41617-large.mp4',
+          ctrPercent: 4.3,
+          cvrPercent: 4.6,
+          status: 'PUBLISHED',
+        },
+        {
+          id: `var_${Date.now()}_c`,
+          variationLabel: 'Variação C (Oferta de Escassez & Sacola)',
+          productName: prodName,
+          durationSeconds: 30,
+          hookText: `Restam menos de 30 unidades com frete grátis na Sacola Amarela aqui embaixo!`,
+          videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-vertical-video-of-a-woman-opening-a-package-41617-large.mp4',
+          ctrPercent: 3.9,
+          cvrPercent: 4.1,
+          status: 'READY',
+        },
+      ];
+
+      setVariations(newVariations);
+
+      // Incrementar métricas em tempo real
+      setMetrics((prev) => ({
+        ...prev,
+        totalVideosGenerated: prev.totalVideosGenerated + 3,
+        activeLiveLoops: prev.activeLiveLoops + 1,
+        totalCommissionsUsd: +(prev.totalCommissionsUsd + 145.5).toFixed(2),
+        totalGmvUsd: +(prev.totalGmvUsd + 970.0).toFixed(2),
+      }));
+
       setGeneratingProductId(null);
       setPipelineStep(0);
     }, 7200);
