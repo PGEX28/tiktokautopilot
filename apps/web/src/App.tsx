@@ -252,9 +252,26 @@ export function App() {
                 </div>
               </div>
 
-              <div className="pt-2 flex justify-between items-center text-xs text-slate-400 border-t border-slate-800/80">
-                <span>Status: {pipelineStep === 4 ? '✅ Concluído com Sucesso!' : '⚡ Processando com aceleração GPU...'}</span>
-                <span className="font-mono text-[#FE2C55]">Passo {pipelineStep}/4</span>
+              <div className="pt-3 flex justify-between items-center text-xs text-slate-400 border-t border-slate-800/80">
+                <span>
+                  {pipelineStep >= 4 ? (
+                    <span className="text-emerald-400 font-bold flex items-center gap-1">
+                      ✅ 3 Criativos Prontos & Transmitindo!
+                    </span>
+                  ) : (
+                    '⚡ Processando com aceleração GPU...'
+                  )}
+                </span>
+                {pipelineStep >= 4 ? (
+                  <button
+                    onClick={() => setGeneratingProductId(null)}
+                    className="px-3 py-1 bg-gradient-to-r from-[#FE2C55] to-[#25F4EE] text-slate-950 font-extrabold rounded-lg shadow-md hover:scale-105 transition-all text-xs"
+                  >
+                    Ver Criativos ↓
+                  </button>
+                ) : (
+                  <span className="font-mono text-[#FE2C55]">Passo {pipelineStep}/4</span>
+                )}
               </div>
             </div>
           </div>
