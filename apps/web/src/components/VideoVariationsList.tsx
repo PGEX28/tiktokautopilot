@@ -1,4 +1,5 @@
-import { Play, Sparkles, ShoppingCart, CheckCircle } from 'lucide-react';
+import { Sparkles, ShoppingCart, CheckCircle } from 'lucide-react';
+
 
 
 export interface VideoVariationCardItem {

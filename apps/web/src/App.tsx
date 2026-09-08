@@ -9,8 +9,8 @@ import { Sparkles } from 'lucide-react';
 export function App() {
   const [autopilotActive, setAutopilotActive] = useState<boolean>(true);
 
-  // Mock State de Métricas
-  const [metrics] = useState<DashboardMetrics>({
+  // State de Métricas
+  const [metrics, setMetrics] = useState<DashboardMetrics>({
     totalGmvUsd: 14820.50,
     totalCommissionsUsd: 2223.00,
     totalVideosGenerated: 27,
@@ -19,8 +19,8 @@ export function App() {
     activeLiveLoops: 3,
   });
 
-  // Mock State de Produtos Minerados
-  const [products] = useState<ProductItem[]>([
+  // State de Produtos Minerados
+  const [products, setProducts] = useState<ProductItem[]>([
     {
       id: 'prod_9921_kitchen',
       title: 'Mini Seladora Térmica Portátil USB',
@@ -56,8 +56,8 @@ export function App() {
     },
   ]);
 
-  // Mock State de Criativos 9:16 (Variações A/B/C)
-  const [variations] = useState<VideoVariationCardItem[]>([
+  // State de Criativos 9:16 (Variações A/B/C)
+  const [variations, setVariations] = useState<VideoVariationCardItem[]>([
     {
       id: 'var_01',
       variationLabel: 'Variação A (Dor/Solução)',
@@ -130,7 +130,7 @@ export function App() {
       const newVariations: VideoVariationCardItem[] = [
         {
           id: `var_${Date.now()}_a`,
-          variationLabel: 'Variação A (Dor & Solução Imediata)',
+          variationLabel: 'Variação A (Dor/Solução)',
           productName: prodName,
           durationSeconds: 30,
           hookText: `Você ainda perde tempo com isso? Veja como o ${prodName.split(' ')[0]} resolve em 3 segundos!`,
@@ -141,7 +141,7 @@ export function App() {
         },
         {
           id: `var_${Date.now()}_b`,
-          variationLabel: 'Variação B (Demonstração Viral Magnética)',
+          variationLabel: 'Variação B (Demonstração Viral)',
           productName: prodName,
           durationSeconds: 30,
           hookText: `O segredo que os criadores gringos usam com esse ${prodName.split(' ')[0]}...`,
@@ -152,7 +152,7 @@ export function App() {
         },
         {
           id: `var_${Date.now()}_c`,
-          variationLabel: 'Variação C (Oferta de Escassez & Sacola)',
+          variationLabel: 'Variação C (Oferta/Escassez)',
           productName: prodName,
           durationSeconds: 30,
           hookText: `Restam menos de 30 unidades com frete grátis na Sacola Amarela aqui embaixo!`,
