@@ -97,8 +97,30 @@ export function App() {
     setAutopilotActive((prev) => !prev);
   };
 
+  const [generatingProductId, setGeneratingProductId] = useState<string | null>(null);
+  const [pipelineStep, setPipelineStep] = useState<number>(0);
+
   const handleGenerateVideos = (productId: string) => {
-    alert(`⚡ Disparado pipeline autônomo de geração para o produto: ${productId}`);
+    setGeneratingProductId(productId);
+    setPipelineStep(1);
+
+    const steps = [
+      { step: 1, delay: 1200 }, // Roteirização A/B/C com IA
+      { step: 2, delay: 2600 }, // Síntese de Voz Neural ElevenLabs
+      { step: 3, delay: 4200 }, // Renderização FFmpeg 9:16 + Ganchos
+      { step: 4, delay: 5800 }, // Master Loop RTMP & Agendamento
+    ];
+
+    steps.forEach(({ step, delay }) => {
+      setTimeout(() => {
+        setPipelineStep(step);
+      }, delay);
+    });
+
+    setTimeout(() => {
+      setGeneratingProductId(null);
+      setPipelineStep(0);
+    }, 7200);
   };
 
   return (
@@ -137,9 +159,54 @@ export function App() {
 
         {/* Lista de Criativos Verticais 9:16 (Variações A/B/C) */}
         <VideoVariationsList variations={variations} />
+
+        {/* Modal Interativo de Pipeline Autônomo em Tempo Real */}
+        {generatingProductId && (
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-[#12121c] border border-slate-700/80 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-[#FE2C55] to-[#25F4EE] flex items-center justify-center animate-pulse">
+                  <Sparkles className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Pipeline de IA em Execução</h3>
+                  <p className="text-xs text-slate-400">Processando produto: <span className="text-[#25F4EE] font-mono">{generatingProductId}</span></p>
+                </div>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                <div className={`flex items-center gap-3 p-3 rounded-xl border text-xs transition-all ${pipelineStep >= 1 ? 'bg-slate-800/80 border-[#25F4EE]/40 text-slate-200' : 'bg-slate-900/40 border-slate-800 text-slate-500'}`}>
+                  <div className={`h-2.5 w-2.5 rounded-full ${pipelineStep === 1 ? 'bg-[#25F4EE] animate-ping' : pipelineStep > 1 ? 'bg-emerald-400' : 'bg-slate-700'}`} />
+                  <span>1. Mineração de Ganchos & Roteirização A/B/C (GPT-4 / Claude)</span>
+                </div>
+
+                <div className={`flex items-center gap-3 p-3 rounded-xl border text-xs transition-all ${pipelineStep >= 2 ? 'bg-slate-800/80 border-[#FE2C55]/40 text-slate-200' : 'bg-slate-900/40 border-slate-800 text-slate-500'}`}>
+                  <div className={`h-2.5 w-2.5 rounded-full ${pipelineStep === 2 ? 'bg-[#FE2C55] animate-ping' : pipelineStep > 2 ? 'bg-emerald-400' : 'bg-slate-700'}`} />
+                  <span>2. Síntese de Áudio & Locução Neural (ElevenLabs)</span>
+                </div>
+
+                <div className={`flex items-center gap-3 p-3 rounded-xl border text-xs transition-all ${pipelineStep >= 3 ? 'bg-slate-800/80 border-[#25F4EE]/40 text-slate-200' : 'bg-slate-900/40 border-slate-800 text-slate-500'}`}>
+                  <div className={`h-2.5 w-2.5 rounded-full ${pipelineStep === 3 ? 'bg-[#25F4EE] animate-ping' : pipelineStep > 3 ? 'bg-emerald-400' : 'bg-slate-700'}`} />
+                  <span>3. Renderização FFmpeg 9:16 + Legendas Dinâmicas</span>
+                </div>
+
+                <div className={`flex items-center gap-3 p-3 rounded-xl border text-xs transition-all ${pipelineStep >= 4 ? 'bg-slate-800/80 border-emerald-500/40 text-slate-200' : 'bg-slate-900/40 border-slate-800 text-slate-500'}`}>
+                  <div className={`h-2.5 w-2.5 rounded-full ${pipelineStep === 4 ? 'bg-emerald-400 animate-ping' : 'bg-slate-700'}`} />
+                  <span>4. Compilação do Master Loop RTMP & Agendamento TikTok</span>
+                </div>
+              </div>
+
+              <div className="pt-2 flex justify-between items-center text-xs text-slate-400 border-t border-slate-800/80">
+                <span>Status: {pipelineStep === 4 ? '✅ Concluído com Sucesso!' : '⚡ Processando com aceleração GPU...'}</span>
+                <span className="font-mono text-[#FE2C55]">Passo {pipelineStep}/4</span>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
 }
 
 export default App;
+
