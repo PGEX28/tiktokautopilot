@@ -1,0 +1,20 @@
+{
+  "name": "@autopilot/queue",
+  "version": "1.0.0",
+  "description": "BullMQ and Redis queue manager, worker orchestrators, and job handlers",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@autopilot/shared": "*",
+    "bullmq": "^5.1.5",
+    "ioredis": "^5.3.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

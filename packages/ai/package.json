@@ -1,0 +1,20 @@
+{
+  "name": "@autopilot/ai",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AI provider abstractions, prompt templates, and generation pipelines",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@autopilot/shared": "*",
+    "@autopilot/tiktok": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@autopilot/database",
+  "version": "1.0.0",
+  "description": "Database client, Supabase connection, schema definitions and repositories",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@autopilot/shared": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

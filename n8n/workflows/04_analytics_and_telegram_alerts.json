@@ -1,0 +1,74 @@
+{
+  "name": "04 - Analytics, AI Optimization & Telegram Alerts",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1,
+              "triggerAtHour": 23,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "node-daily-cron",
+      "name": "Daily Close Schedule (23:00)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.API_BASE_URL || 'http://localhost:3000'}}/api/v1/analytics/daily-summary",
+        "options": {}
+      },
+      "id": "node-fetch-analytics",
+      "name": "Fetch Daily Analytics & Run Optimization",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID || '@tiktok_shop_autopilot_alerts'}}",
+        "text": "=🚀 *Resumo Diário - TikTok Shop AI Autopilot*\n\n💰 *GMV Total:* ${{$json.totalGmvUsd}}\n💵 *Comissões:* ${{$json.totalCommissionsUsd}}\n📈 *CTR Médio:* {{$json.averageCtrPercent}}%\n🎯 *CVR Médio:* {{$json.averageCvrPercent}}%\n\n🏆 *Melhor Criativo:* {{$json.winningCreativeTitle}}\n✨ *Ganchos Otimizados para Amanhã:* {{$json.topOptimizedHook}}\n\n🤖 _Status do Autopilot: 100% Saudável e Ativo 24/7_",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "node-telegram-alert",
+      "name": "Send Telegram Summary Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Daily Close Schedule (23:00)": {
+      "main": [
+        [
+          {
+            "node": "Fetch Daily Analytics & Run Optimization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Daily Analytics & Run Optimization": {
+      "main": [
+        [
+          {
+            "node": "Send Telegram Summary Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

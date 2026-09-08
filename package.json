@@ -1,0 +1,43 @@
+{
+  "name": "tiktok-shop-ai-autopilot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Autonomous AI-powered TikTok Shop affiliate product hunting, content generation, and video variation system.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:api": "npm run dev --workspace=@autopilot/api",
+    "dev:web": "npm run dev --workspace=@autopilot/web",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
+    "clean": "npm run clean --workspaces --if-present"
+  },
+  "keywords": [
+    "tiktok-shop",
+    "ai-video",
+    "autopilot",
+    "affiliate-marketing",
+    "bullmq",
+    "supabase"
+  ],
+  "author": "TikTok Shop AI Autopilot Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "bullmq": "^6.3.4",
+    "ioredis": "^6.0.0"
+  }
+}

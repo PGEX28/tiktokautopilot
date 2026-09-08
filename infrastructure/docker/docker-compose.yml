@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: tiktok_autopilot_redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: tiktok_autopilot_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: tiktok_autopilot
+    ports:
+      - '5432:5432'
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+volumes:
+  redis-data:
+  pg-data:

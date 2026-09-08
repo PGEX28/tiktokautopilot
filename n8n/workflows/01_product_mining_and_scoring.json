@@ -1,0 +1,105 @@
+{
+  "name": "01 - Product Mining & AI Scoring (TikTok Shop)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 4
+            }
+          ]
+        }
+      },
+      "id": "node-schedule",
+      "name": "Schedule Trigger (A cada 4h)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.API_BASE_URL || 'http://localhost:3000'}}/api/v1/hunter/mine",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"category\": \"Cozinha e Casa\",\n  \"limit\": 10,\n  \"minCommissionRate\": 0.15\n}",
+        "options": {}
+      },
+      "id": "node-http-mine",
+      "name": "Mine Products API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$json.score}}",
+              "operation": "largerEqual",
+              "value2": 80
+            }
+          ]
+        }
+      },
+      "id": "node-filter-score",
+      "name": "Filter AI Score >= 80",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.API_BASE_URL || 'http://localhost:3000'}}/api/v1/queue/jobs",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"queueName\": \"video-generation\",\n  \"data\": {\n    \"productId\": \"={{$json.id}}\",\n    \"productName\": \"={{$json.title}}\",\n    \"category\": \"={{$json.category}}\",\n    \"score\": \"={{$json.score}}\"\n  }\n}",
+        "options": {}
+      },
+      "id": "node-queue-video",
+      "name": "Enqueue Video Generation Job",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [880, 260]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger (A cada 4h)": {
+      "main": [
+        [
+          {
+            "node": "Mine Products API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mine Products API": {
+      "main": [
+        [
+          {
+            "node": "Filter AI Score >= 80",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter AI Score >= 80": {
+      "main": [
+        [
+          {
+            "node": "Enqueue Video Generation Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

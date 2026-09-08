@@ -1,0 +1,71 @@
+{
+  "name": "02 - A/B/C Video Generation Pipeline (TikTok 9:16)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generate-abc-videos",
+        "options": {}
+      },
+      "id": "node-webhook-start",
+      "name": "Webhook Trigger (New Product)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.API_BASE_URL || 'http://localhost:3000'}}/api/v1/video/generate-bundle",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"productId\": \"={{$json.body.productId}}\",\n  \"productName\": \"={{$json.body.productName}}\",\n  \"productCategory\": \"={{$json.body.category}}\"\n}",
+        "options": {}
+      },
+      "id": "node-http-bundle",
+      "name": "Generate 3 Variations (A/B/C)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.API_BASE_URL || 'http://localhost:3000'}}/api/v1/tiktok/publish",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"productId\": \"={{$json.productId}}\",\n  \"bundleId\": \"={{$json.bundleId}}\",\n  \"variations\": \"={{$json.variations}}\"\n}",
+        "options": {}
+      },
+      "id": "node-publish-tiktok",
+      "name": "Publish to TikTok Shop API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger (New Product)": {
+      "main": [
+        [
+          {
+            "node": "Generate 3 Variations (A/B/C)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate 3 Variations (A/B/C)": {
+      "main": [
+        [
+          {
+            "node": "Publish to TikTok Shop API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
