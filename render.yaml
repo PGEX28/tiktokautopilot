@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: tiktok-autopilot-api
+    runtime: docker
+    dockerfilePath: apps/api/Dockerfile
+    dockerContext: .
+    plan: free
+    region: ohio
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: NODE_ENV
+        value: production
+      - key: APP_ENV
+        value: PRODUCTION
+      - key: SUPABASE_URL
+        value: https://vdslzflqucruvklszits.supabase.co
+      - key: SUPABASE_ANON_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkc2x6ZmxxdWNydXZrbHN6aXRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NzQ1OTEsImV4cCI6MjEwNDQ1MDU5MX0.gy2eEvObHeDBvHqiAHyTxvQkvE7OyOZL2O1KCuwxBp4
+      - key: SUPABASE_PUBLISHABLE_KEY
+        value: sb_publishable_1Sb0hXi3wvlcnrhPmcks4w_rP3vG_aB
+      - key: TIKTOK_CLIENT_KEY
+        value: awrcak45ahprbejn
+      - key: TIKTOK_CLIENT_SECRET
+        value: SzIeXifZbsN3NSLneNP1fp1jEKzRd9kC
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        value: tiktok_autopilot_jwt_super_secret_key_2026_xyz
+      - key: ENCRYPTION_KEY
+        value: e8c253d81dfa5b74681329cbf1a473f309cb9f82631742468305886d4e214299
+      - key: CORS_ORIGINS
+        value: https://tiktokautopilot-web.vercel.app,http://localhost:5173,http://localhost:3000
