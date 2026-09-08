@@ -23,7 +23,7 @@ services:
         value: awrcak45ahprbejn
       - key: TIKTOK_CLIENT_SECRET
         value: SzIeXifZbsN3NSLneNP1fp1jEKzRd9kC
-      - key: OPENAI_API_KEY
+      - key: GEMINI_API_KEY
         sync: false
       - key: ELEVENLABS_API_KEY
         sync: false
