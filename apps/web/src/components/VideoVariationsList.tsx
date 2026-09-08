@@ -1,5 +1,5 @@
 import { Sparkles, ShoppingCart, CheckCircle } from 'lucide-react';
-
+import { CreativeVideoPlayer } from './CreativeVideoPlayer';
 
 
 export interface VideoVariationCardItem {
@@ -16,6 +16,22 @@ export interface VideoVariationCardItem {
 
 interface VideoVariationsListProps {
   variations: VideoVariationCardItem[];
+}
+
+/**
+ * Returns true if the URL is a real, playable video URL.
+ * Fake CDN domains like cdn.tiktokautopilot.io return false.
+ */
+function isRealVideoUrl(url: string): boolean {
+  if (!url) return false;
+  // Known fake/mock domains
+  const fakeDomains = ['cdn.tiktokautopilot.io', 'localhost:9999'];
+  try {
+    const parsed = new URL(url);
+    return !fakeDomains.some((d) => parsed.hostname.includes(d));
+  } catch {
+    return false;
+  }
 }
 
 export const VideoVariationsList: React.FC<VideoVariationsListProps> = ({ variations }) => {
@@ -36,17 +52,30 @@ export const VideoVariationsList: React.FC<VideoVariationsListProps> = ({ variat
             key={v.id}
             className="rounded-xl bg-[#14141c] border border-slate-800/80 overflow-hidden flex flex-col justify-between shadow-lg"
           >
-            {/* Visual 9:16 Real Video Player */}
+            {/* Visual 9:16 — Real Video or Canvas Creative */}
             <div className="relative aspect-[9/16] bg-black overflow-hidden flex flex-col justify-between border-b border-slate-800">
-              <video
-                src={v.videoUrl}
-                controls
-                playsInline
-                autoPlay
-                muted
-                loop
-                className="absolute inset-0 w-full h-full object-cover z-0"
-              />
+              {isRealVideoUrl(v.videoUrl) ? (
+                <video
+                  src={v.videoUrl}
+                  controls
+                  playsInline
+                  autoPlay
+                  muted
+                  loop
+                  className="absolute inset-0 w-full h-full object-cover z-0"
+                />
+              ) : (
+                <div className="absolute inset-0 w-full h-full z-0">
+                  <CreativeVideoPlayer
+                    hookText={v.hookText}
+                    productName={v.productName}
+                    variationLabel={v.variationLabel}
+                    status={v.status}
+                    width={320}
+                    height={568}
+                  />
+                </div>
+              )}
 
               <div className="flex items-center justify-between z-10 p-3 bg-gradient-to-b from-black/80 to-transparent">
                 <span className="px-2.5 py-1 rounded-md text-[10px] font-extrabold bg-[#121218]/90 text-white border border-slate-700 backdrop-blur-md">
